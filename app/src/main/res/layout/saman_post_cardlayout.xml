@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_constraintlayout">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="190dp"
+        android:layout_height="278dp"
+        android:id="@+id/cardview"
+        android:elevation="5dp"
+        app:cardElevation="6dp"
+        app:cardMaxElevation="6dp"
+        app:cardCornerRadius="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardUseCompatPadding="true"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/college_blue"
+                android:scaleType="centerCrop"
+                android:id="@+id/saman_image"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Price"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:id="@+id/saman_price"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="something"
+                    android:textSize="15dp"
+                    android:id="@+id/saman_title"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
