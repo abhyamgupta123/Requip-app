@@ -52,7 +52,7 @@ public class api_methods {
                         Log.d(TAG, "respose -> " + response.toString());
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            Log.d(TAG, "respose messsage is -->" + jsonObject.getString("message"));
+                            Log.d(TAG + classname, "respose messsage is -->" + jsonObject.getString("message"));
                             mResultCallback.notifySuccess("POSTCALL", jsonObject);
                         } catch (JSONException e) {
                             Log.e(TAG + classname, "Some error is parsing and sending respose message to activity class");

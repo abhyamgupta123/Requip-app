@@ -3,6 +3,7 @@ package com.example.requip;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -41,7 +43,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         androidx.appcompat.widget.Toolbar toolbar = (Toolbar) findViewById( R.id.login_toolbar);
         setSupportActionBar( toolbar );
@@ -55,6 +57,8 @@ public class Login extends AppCompatActivity {
         id = (TextInputLayout) findViewById(R.id.loginId);
         pass = (TextInputLayout) findViewById(R.id.loginpass);
         Button login_btn = (Button) findViewById(R.id.btn_login);
+        TextView registration_ = (TextView) findViewById(R.id.goToRegistraion);
+
 
         sharedPreferences = getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -62,6 +66,10 @@ public class Login extends AppCompatActivity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Showing progress window:-
+                ProgressDialog dialog = ProgressDialog.show(Login.this, "",
+                        "Loading. Please wait...", true);
+
                 // getting all the values from fields.
                 String _id = id.getEditText().getText().toString().trim();
                 String _pass = pass.getEditText().getText().toString();
@@ -76,9 +84,16 @@ public class Login extends AppCompatActivity {
                 // calling the desired method:-
                 method = new api_methods(mResultCallback, Login.this);
                 method.login_user("POSTCALL", TAG, url, _id, _pass);
-                finishAffinity();
             }
         });
+
+        registration_.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( new Intent(Login.this, Registration.class));
+            }
+        });
+
     }
 
     void initVolleyCallback(){
@@ -108,7 +123,7 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                         Toast.makeText(Login.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
-                        finish();
+                        finishAffinity();
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Has not contained message field...");

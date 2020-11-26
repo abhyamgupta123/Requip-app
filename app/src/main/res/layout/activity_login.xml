@@ -7,20 +7,21 @@
     android:orientation="vertical"
     android:background="@color/site_background_color"
     android:fitsSystemWindows="true"
+    app:statusBarBackground="@color/colorPrimaryDark"
     tools:context=".Login"
-    android:id="@+id/login_constraintlayout">
+    android:id="@+id/login_coordinator">
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/main_appbar"
+        android:id="@+id/login_appbar"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/main_constraint">
+            android:id="@+id/login_constraint">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/login_toolbar"
@@ -42,7 +43,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/login_constraintlayout">
+        app:layout_constraintTop_toBottomOf="@+id/login_coordinator">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,15 +85,28 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="LOGIN"
             android:id="@+id/btn_login"
             android:shadowColor="#000000"
-            android:background="@color/college_blue"
+            android:backgroundTint="@color/college_blue"
             android:padding="10dp"
             />
+
+        <TextView
+            android:id="@+id/goToRegistraion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="New Here ? Register Yourself"
+            android:shadowColor="#000000"
+            android:elevation="12dp"/>
 
     </LinearLayout>
 

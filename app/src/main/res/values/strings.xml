@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Requip</string>
     <string name="base_url">http://192.168.1.6:5000</string>
+<!--    <string name="base_url">https://requip.azurewebsites.net</string>-->
     <string name="base_url_samanImage">https://abhisprojects.blob.core.windows.net/requip/</string>
     <string name="navigation_drawer_open">Open Navigation Drawer/</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>
