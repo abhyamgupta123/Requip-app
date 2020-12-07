@@ -38,6 +38,9 @@ public class Login extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
+    // progressbar dialog:-
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +70,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Showing progress window:-
-                ProgressDialog dialog = ProgressDialog.show(Login.this, "",
+                dialog = ProgressDialog.show(Login.this, "",
                         "Loading. Please wait...", true);
 
                 // getting all the values from fields.
@@ -104,9 +107,11 @@ public class Login extends AppCompatActivity {
                     String _message = response.getString("message");
                     if (_message.contains("User does not exists")){
                         id.setError("User Doesn't Exsist");
+                        dialog.hide();
                     }else if(_message.contains("Invalid Credentials")){
                         id.setError("Invalid Credentials");
                         pass.setError("Invalid Credentials");
+                        dialog.hide();
                     }
                     else{
                         String _name = response.getString("name");
@@ -123,6 +128,7 @@ public class Login extends AppCompatActivity {
                         editor.commit();
                         Toast.makeText(Login.this, "Login Successfull!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Login.this, MainActivity.class));
+                        dialog.hide();
                         finishAffinity();
                     }
                 } catch (JSONException e) {
@@ -142,6 +148,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void notifyError(String requestType, VolleyError error) {
                 Toast.makeText(Login.this, "Some error occured while Logging in...", Toast.LENGTH_SHORT).show();
+                dialog.hide();
                 Log.e(TAG, "Volley requester " + requestType);
                 Log.e(TAG, "Volley error===>>>" + "That didn't work!");
             }

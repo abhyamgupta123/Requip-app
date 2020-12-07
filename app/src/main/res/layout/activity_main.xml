@@ -23,7 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/coordinatorLayout_mypost">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +45,7 @@
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/mainactivity_toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="?attr/actionBarSize"
                         app:title="@string/app_name"
                         android:background="@color/new_college_blue"
                         app:titleTextColor="@android:color/white"
@@ -53,6 +54,7 @@
                         tools:layout_editor_absoluteY="-6dp" />
 
                     <ImageView
+                        android:id="@+id/mainactivity_logo"
                         android:layout_width="130dp"
                         android:layout_height="50dp"
                         android:layout_marginEnd="5dp"
@@ -91,8 +93,7 @@
                 android:backgroundTint="@color/college_blue"
                 app:borderWidth="0dp"
                 android:textAlignment="center"
-                tools:ignore="RtlCompat"
-                android:onClick="addsaman"/>
+                tools:ignore="RtlCompat"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

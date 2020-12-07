@@ -58,7 +58,10 @@
                 android:id="@+id/loginId"
                 android:hint="Username/Email"
                 app:counterMaxLength="20"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                tools:ignore="HardcodedText">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -74,7 +77,11 @@
                 android:id="@+id/loginpass"
                 android:hint="Password"
                 app:passwordToggleEnabled="true"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
+                app:counterTextColor="@color/new_college_blue"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                tools:ignore="HardcodedText">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -93,7 +100,7 @@
             android:shadowColor="#000000"
             android:backgroundTint="@color/college_blue"
             android:padding="10dp"
-            />
+            tools:ignore="HardcodedText,UnusedAttribute" />
 
         <TextView
             android:id="@+id/goToRegistraion"
@@ -104,9 +111,12 @@
             android:layout_marginTop="10dp"
             android:clickable="true"
             android:focusable="true"
+            android:contextClickable="true"
             android:text="New Here ? Register Yourself"
             android:shadowColor="#000000"
-            android:elevation="12dp"/>
+            android:elevation="12dp"
+            tools:targetApi="m"
+            tools:ignore="HardcodedText,SpUsage" />
 
     </LinearLayout>
 

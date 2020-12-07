@@ -8,5 +8,9 @@
     <color name="college_blue">#03A9F4</color>
     <color name="college_blue_light">#71C5EC</color>
     <color name="new_college_blue">#017BCC</color>
+    <color name="newcollegeblue2">#2A72A1</color>
     <color name="site_background_color">#ffebee</color>
+    <color name="hintColor">#C4000000</color>
+    <color name="image_background">#71C5EC</color>
+    <color name="circularbuttonColor">#1BBEFF</color>
 </resources>

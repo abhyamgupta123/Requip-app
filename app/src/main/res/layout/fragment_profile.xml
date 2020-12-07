@@ -1,167 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
+    android:background="@drawable/samanadd"
+    android:fitsSystemWindows="true"
     tools:context=".profileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/profile_user_image"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:clickable="true"
-                android:focusable="true"
-                tools:ignore="MissingConstraints"
-                android:src="@drawable/iitjammu"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:elevation="10dp"
+                android:padding="10dp"
+                android:outlineProvider="bounds">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_user_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="30dp"
+                    android:outlineProvider="bounds"
+                    tools:ignore="MissingConstraints"
+                    android:src="@drawable/iitjammu"
+                    tools:targetApi="lollipop" />
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profile_card5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                app:cardBackgroundColor="@color/college_blue_light"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="6dp"
-                app:cardMaxElevation="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/profile_user_image"
-                tools:ignore="MissingConstraints">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profile_name"
+                    android:hint="Name"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_nameedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"/>
 
 
-            <TextView
-                android:id="@+id/profile_name"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textSize="22dp"
-                android:paddingLeft="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Name : " />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profile_username"
+                    android:hint="Username"
+                    android:enabled="false"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    android:textIsSelectable="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profile_card6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="5dp"
-                app:cardBackgroundColor="@color/college_blue_light"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="6dp"
-                app:cardMaxElevation="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/profile_user_image"
-                tools:ignore="MissingConstraints">
-
-
-            <TextView
-                android:id="@+id/profile_username"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textSize="22dp"
-                android:paddingLeft="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Username : " />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profile_card1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/college_blue_light"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="6dp"
-                app:cardMaxElevation="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/profile_user_image"
-                tools:ignore="MissingConstraints">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_usernameedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textIsSelectable="true"
+                        android:textColor="@android:color/darker_gray"/>
 
 
-                <TextView
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/profile_email"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textSize="22dp"
-                    android:paddingLeft="12dp"
+                    android:hint="Email"
+                    android:enabled="false"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    android:textIsSelectable="true"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_emailedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textIsSelectable="true"
+                        android:textColor="@android:color/darker_gray"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email : " />
-
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profile_card2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/college_blue_light"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="6dp"
-                app:cardMaxElevation="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/profile_card1"
-                tools:ignore="MissingConstraints">
-
-
-                <TextView
                     android:id="@+id/profile_description"
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textSize="22dp"
-                    android:paddingLeft="12dp"
+                    android:hint="About"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_abouteedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="About : " />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/profile_card4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                app:cardBackgroundColor="@color/college_blue_light"
-                app:cardCornerRadius="5dp"
-                android:layout_marginTop="8dp"
-                app:cardElevation="6dp"
-                app:cardMaxElevation="6dp"
-                app:layout_constraintTop_toBottomOf="@+id/profile_card2"
-                tools:ignore="MissingConstraints">
-
-
-                <TextView
-                    style="@style/TextAppearance.MaterialComponents.Headline6"
-                    android:textSize="20dp"
                     android:id="@+id/profile_phone"
-                    android:paddingLeft="12dp"
-                    android:layout_width="match_parent"
+                    android:hint="Phone number"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_phoneedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/profile_updatebutton"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:text="phone : " />
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/new_college_blue"
+                    android:text="Update" />
 
-            </com.google.android.material.card.MaterialCardView>
 
-        </LinearLayout>
+            </LinearLayout>
 
-
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

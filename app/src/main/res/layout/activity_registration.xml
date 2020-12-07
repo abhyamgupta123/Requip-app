@@ -68,6 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Name"
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
                 app:counterMaxLength="20">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -81,6 +83,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/username"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username">
@@ -96,6 +100,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email">
@@ -111,6 +117,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Mobile">
@@ -126,6 +134,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/password"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/new_college_blue"
+                app:hintTextColor="@color/new_college_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"
