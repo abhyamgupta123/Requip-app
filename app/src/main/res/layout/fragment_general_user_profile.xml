@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/samanadd"
+    android:fitsSystemWindows="true"
+    tools:context=".profileFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:elevation="10dp"
+                android:padding="10dp"
+                android:outlineProvider="bounds"
+                tools:ignore="ScrollViewSize,UnusedAttribute">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/generalprofile_user_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:elevation="30dp"
+                    android:outlineProvider="bounds"
+                    tools:ignore="MissingConstraints"
+                    android:src="@drawable/iitjammu"
+                    tools:targetApi="lollipop" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/generalprofile_name"
+                    android:hint="Name"
+                    android:elevation="5dp"
+                    android:enabled="false"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    android:textIsSelectable="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_nameedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        android:inputType="text"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/generalprofile_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:enabled="false"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    android:textIsSelectable="true"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText,UnusedAttribute">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_usernameedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textIsSelectable="true"
+                        android:textColor="@android:color/darker_gray"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/generalprofile_email"
+                    android:hint="Email"
+                    android:enabled="false"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    android:textIsSelectable="true"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText,UnusedAttribute">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_emailedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textIsSelectable="true"
+                        android:textColor="@android:color/darker_gray"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/generalprofile_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="About"
+                    android:elevation="5dp"
+                    app:counterMaxLength="20"
+                    android:layout_marginTop="8dp"
+                    android:enabled="false"
+                    app:boxStrokeColor="@color/new_college_blue"
+                    app:hintTextColor="@color/new_college_blue"
+                    android:textSize="22sp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    tools:ignore="HardcodedText,UnusedAttribute">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_abouteedit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"/>
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

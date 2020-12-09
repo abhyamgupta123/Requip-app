@@ -6,6 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +29,9 @@ public class saman_adapter extends RecyclerView.Adapter<saman_adapter.ViewHolder
 
     private List<saman> samanList;
     Context context;
-
+    // Allows to remember the last item shown on screen
+    private int lastPosition = -1;
+    private final static int FADE_DURATION = 1000; //FADE_DURATION in milliseconds
 
 
     public saman_adapter(List<saman> _samanList, Context contextm) {
@@ -92,14 +98,42 @@ public class saman_adapter extends RecyclerView.Adapter<saman_adapter.ViewHolder
                 .error( R.drawable.iitj )
                 .into( IVimage );
 
+//         Here you apply the animation when the view is bound
+//        setAnimation(holder.itemView, position);
+        // Set the view to fade in
+        setFadeAnimation(holder.itemView, lastPosition);
+    }
 
+    // animation functions to use accordingly;-
+    // this animation is for fading animation while revealing:-
+    private void setFadeAnimation(View view, int position) {
 
-        holder.constraintLayout.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "saman id " + saman_post.getId(), Toast.LENGTH_SHORT).show();
-            }
-        } );
+        // If the bound view wasn't previously displayed on screen, it's animated
+//        if (position > lastPosition) {
+            AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+            anim.setDuration(FADE_DURATION);
+            view.startAnimation(anim);
+//            lastPosition = position;
+//        }
+    }
+
+    // this animation is for scaling up while revealing;-
+    private void setScaleAnimation(View view) {
+        ScaleAnimation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        anim.setDuration(FADE_DURATION);
+        view.startAnimation(anim);
+    }
+
+    // this animation is for sliding for left while revealing:-
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        if (position > lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     // Returns the total count of items in the list
@@ -108,9 +142,14 @@ public class saman_adapter extends RecyclerView.Adapter<saman_adapter.ViewHolder
         return samanList.size();
     }
 
-//    private void loadimage (String Url){
-//        Picasso.get().load( Url ).placeholder( R.mipmap.ic_launcher )
-//                .error( R.mipmap.ic_launcher )
-//                .into(  );
-//    }
+
+    public void clear() {
+        samanList.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items -- change to type used
+    public void addAll(List<saman> list) {
+        this.samanList = list;
+    }
 }

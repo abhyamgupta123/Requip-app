@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".mypostFragment">
+    tools:context=".mypostFragment"
+    android:id="@+id/coordinatorLayout_mypos">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -12,6 +13,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="0dp">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/mypost_swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvusersaman"
@@ -24,6 +32,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_appbar" />
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
