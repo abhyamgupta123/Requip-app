@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
@@ -37,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class profileFragment extends Fragment {
     private static final String TAG = profileFragment.class.getName();
@@ -50,13 +54,18 @@ public class profileFragment extends Fragment {
     Intent intent;
     String tosend_imageString = "";
 
-    de.hdodenhof.circleimageview.CircleImageView profile_image;
-    TextInputLayout profile_name;
-    TextInputLayout profile_username;
-    TextInputLayout profile_email;
-    TextInputLayout profile_descript;
-    TextInputLayout profile_phone;
-    Button update;
+    // for setting into permanent memory:-
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+    private de.hdodenhof.circleimageview.CircleImageView profile_image;
+    private TextInputLayout profile_name;
+    private TextInputLayout profile_username;
+    private TextInputLayout profile_email;
+    private TextInputLayout profile_descript;
+    private TextInputLayout profile_phone;
+    private SwitchMaterial switchbox;
+    private Button update;
 
     TextInputEditText p_name;
     TextInputEditText p_username;
@@ -82,12 +91,28 @@ public class profileFragment extends Fragment {
         profile_descript = view.findViewById(R.id.profile_description);
         profile_phone = view.findViewById(R.id.profile_phone);
         update = view.findViewById(R.id.profile_updatebutton);
+        switchbox = view.findViewById(R.id.profile_switch);
 
         p_name = view.findViewById(R.id.profile_nameedit);
         p_username = view.findViewById(R.id.profile_usernameedit);
         p_email = view.findViewById(R.id.profile_emailedit);
         p_about = view.findViewById(R.id.profile_abouteedit);
         p_phone = view.findViewById(R.id.profile_phoneedit);
+
+
+        sharedPreferences = thiscontext.getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        switchbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    makeVisible();
+                } else{
+                    makeInvisible();
+                }
+            }
+        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +172,7 @@ public class profileFragment extends Fragment {
         dialog = ProgressDialog.show(thiscontext, "",
                 "Loading. Please wait...", true);
         method.userprofile("GETCALL", TAG, url);
+        makeInvisible();                    // so that use will not try to edit initially.
 
         return view;
     }
@@ -163,10 +189,10 @@ public class profileFragment extends Fragment {
                     try {
                         String message = response.getString("message");
                         Log.e(TAG, message);
-                        profile_name.setVisibility(View.INVISIBLE);
-                        profile_username.setVisibility(View.INVISIBLE);
-                        profile_email.setVisibility(View.INVISIBLE);
-                        profile_phone.setVisibility(View.INVISIBLE);
+                        profile_name.setVisibility(View.GONE);
+                        profile_username.setVisibility(View.GONE);
+                        profile_email.setVisibility(View.GONE);
+                        profile_phone.setVisibility(View.GONE);
                         profile_descript.setVisibility(View.VISIBLE);
                         profile_descript.getEditText().setText("USER DOES NOT EXSIST");
                     } catch (JSONException e) {
@@ -207,6 +233,11 @@ public class profileFragment extends Fragment {
                         Log.e(TAG, message);
                         if (message.contains("Information updated successfully")) {
                             Log.d(TAG, "information is updated successfully..!!");
+                            editor.putString("name", profile_name.getEditText().getText().toString());
+                            editor.commit();
+                            makeInvisible();
+                            switchbox.setEnabled(false);
+
                             Toast.makeText(thiscontext, "Information Updated Successfully", Toast.LENGTH_LONG).show();
                         } else {
                             Log.e(TAG, "information is not updated successfully.");
@@ -238,7 +269,7 @@ public class profileFragment extends Fragment {
                             Log.e(TAG, "Some error occured while fetching information..!!");
                         }
                     }
-                } else if(requestType.equals("POSTCALLPROFILEPIC")) {
+                } else if(requestType.contains("POSTCALLPROFILEPIC")) {
                     Log.d(TAG, "Volley requester " + requestType);
                     Log.d(TAG, "Volley JSONObjest post request successfull.");
                     try {
@@ -246,6 +277,9 @@ public class profileFragment extends Fragment {
                         Log.e(TAG, message);
                         if (message.contains("Saved Successfully")) {
                             Toast.makeText(thiscontext, "Image saved successfully", Toast.LENGTH_SHORT).show();
+                            String imagepath = response.getString("image");
+                            editor.putString("image", imagepath);
+                            editor.commit();
                             Log.d(TAG, "Image saved successfully");
                         } else {
                             Toast.makeText(thiscontext, "Image not successfully", Toast.LENGTH_LONG).show();
@@ -342,7 +376,7 @@ public class profileFragment extends Fragment {
                         Bitmap resizedImage = getResizedBitmap(selectedImage, 400, 400);
                         String encodedImage = encodeImage(resizedImage);
                         tosend_imageString = "Image is comming, " + encodedImage;
-                        Log.d(TAG, "encoded image string is ==>> " + tosend_imageString);
+//                        Log.d(TAG, "encoded image string is ==>> " + tosend_imageString);
                         profile_image.setImageURI(imageUri);
                     } catch (FileNotFoundException e) {
                         Toast.makeText(thiscontext, "Image is not loaded due to some error!", Toast.LENGTH_LONG).show();
@@ -353,6 +387,19 @@ public class profileFragment extends Fragment {
                 break;
         }
     }
+
+    // these two set the edit mode to be able to be edited or not:-
+    private void makeVisible(){
+        profile_name.setEnabled(true);
+        profile_descript.setEnabled(true);
+        profile_phone.setEnabled(true);
+    }
+    private void makeInvisible(){
+        profile_name.setEnabled(false);
+        profile_descript.setEnabled(false);
+        profile_phone.setEnabled(false);
+    }
+
 
     // to encode the image to base64 string:-
     private String encodeImage(Bitmap bm)

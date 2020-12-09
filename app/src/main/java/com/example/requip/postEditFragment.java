@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +35,8 @@ public class postEditFragment extends Fragment {
     private TextInputLayout price;
     private TextInputLayout samanType;
     private TextInputLayout phone;
+    private SwitchMaterial switchbox;
+
 
     private Context thiscontext;
     private IResult mResultCallback = null;
@@ -70,6 +74,7 @@ public class postEditFragment extends Fragment {
         price = view.findViewById(R.id.editsaman_price);
         samanType = view.findViewById(R.id.editsaman_type);
         phone = view.findViewById(R.id.editsaman_phone);
+        switchbox = view.findViewById(R.id.editSaman_switch);
 
         image.setVisibility(View.VISIBLE);
 
@@ -82,6 +87,17 @@ public class postEditFragment extends Fragment {
 //        final String base_url = getResources().getString(R.string.base_url);
 //        // calling the desired method:-
 //        method = new api_methods(mResultCallback, thiscontext);
+
+        switchbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    makeVisible();
+                } else{
+                    makeInvisible();
+                }
+            }
+        });
 
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +143,7 @@ public class postEditFragment extends Fragment {
                 "Loading. Please wait...", true);
         method = new api_methods(mResultCallback, thiscontext);
         method.singlesamaninfo("GETCALL", TAG, finalurl, null, null, null, null, null);
+        makeInvisible();
         return view;
     }
 
@@ -251,5 +268,21 @@ public class postEditFragment extends Fragment {
                 Log.e(TAG, "Volley string error ===>>" + error);
             }
         };
+    }
+
+    // these two set the edit mode to be able to be edited or not:-
+    private void makeVisible(){
+        title.setEnabled(true);
+        description.setEnabled(true);
+        price.setEnabled(true);
+        samanType.setEnabled(true);
+        phone.setEnabled(true);
+    }
+    private void makeInvisible(){
+        title.setEnabled(false);
+        description.setEnabled(false);
+        price.setEnabled(false);
+        samanType.setEnabled(false);
+        phone.setEnabled(false);
     }
 }

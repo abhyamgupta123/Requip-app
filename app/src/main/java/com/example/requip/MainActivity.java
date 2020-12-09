@@ -307,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_editprofile:
                 searchmenu.setVisible(false);
+                collegeLogo.setVisibility(View.VISIBLE);
                 toolbar.setTitle("My Profile");
                 selectedfragment = new profileFragment();
                 fab.setVisibility(View.INVISIBLE);

@@ -75,6 +75,7 @@ public class homeFragment extends Fragment {
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.home_swipeContainer);
 
         initVolleyCallback();
+
         // Showing progress window:-
         dialog = ProgressDialog.show(thiscontext, "",
                 "Loading. Please wait...", true);
@@ -121,10 +122,19 @@ public class homeFragment extends Fragment {
             @Override
             public void onClick(View view, final int position) {
                 //Values are passing to activity & to fragment as well
-                Toast.makeText(thiscontext, "saman id is " + samanList.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(thiscontext, "saman id is " + samanList.get(position).getId(), Toast.LENGTH_SHORT).show();
                 swipeflag = true;
+
+                // adding values to pass to ther activity:-
+                Bundle args = new Bundle();
+                args.putString("samanid", samanList.get(position).getId());
+                args.putString("sugesstion_type", samanList.get(position).getType());
+
+                Fragment showpostfragment = new showPostFragment();
+                showpostfragment.setArguments(args);
+
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fraagment_view, new showPostFragment());
+                fragmentTransaction.add(R.id.fraagment_view, showpostfragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
@@ -235,8 +245,12 @@ public class homeFragment extends Fragment {
                     Log.e(TAG, "error reason is -> " + e2);
                     swipeContainer.setRefreshing(false);
                 }
-
-                dialog.hide();
+                try {
+                    dialog.hide();
+                    swipeContainer.setRefreshing(false);
+                } catch (Exception e) {
+                    Log.e(TAG, "Any one of the dialog is null referenced. Handling error");
+                }
                 swipeContainer.setRefreshing(false);
                 Log.d(TAG, "Volley requester " + requestType);
             }

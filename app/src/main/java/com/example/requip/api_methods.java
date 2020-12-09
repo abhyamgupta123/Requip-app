@@ -127,6 +127,55 @@ public class api_methods {
         queue.add(postRequest);
     }
 
+    public void generaluserprofile(final String requestType, final String TAG, final String url) {
+        // using shared preference values to get request:-
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
+        final String _access_token = sharedPreferences.getString("access_token", null);
+        String _refresh_token = sharedPreferences.getString("refresh_token", null);
+
+        RequestQueue queue = Volley.newRequestQueue(context);  // passing context is neccessary.
+        StringRequest postRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d(TAG, "respose -> " + response.toString());
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            mResultCallback.notifySuccess(requestType, jsonObject);
+
+                        } catch (JSONException e) {
+                            Log.e(TAG + classname,"Some error occured while decoding json object");
+                            e.printStackTrace();
+                            mResultCallback.ErrorString(requestType, "error occured while decoding jsonobject");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error handling
+                        Log.e(TAG + classname, "Error.Response -> " + error);
+                        try {
+                            if (error.networkResponse.statusCode == 401) {
+                                Log.d(TAG + classname, "Handline autherror failure");
+                                refresh_token(sharedPreferences, TAG);
+                                userprofile(requestType, TAG, url);
+                            } else {
+                                Log.e(TAG + classname, "some network error occured.");
+                                Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(TAG + classname, "Some unknown error, maybe network problem...");
+                        }
+                        mResultCallback.notifyError(requestType, error);
+                    }
+                }
+        );
+        queue.add(postRequest);
+    }
+
     public void userprofile(final String requestType, final String TAG, final String url) {
         // using shared preference values to get request:-
         final SharedPreferences sharedPreferences = context.getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
@@ -160,11 +209,10 @@ public class api_methods {
                                 Log.d(TAG + classname, "Handline autherror failure");
                                 refresh_token(sharedPreferences, TAG);
                                 userprofile(requestType, TAG, url);
-                            } else{
+                            } else {
                                 Log.e(TAG + classname, "some network error occured.");
                                 Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
                             }
-                            mResultCallback.notifyError(requestType, error);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(TAG + classname, "Some unknown error, maybe network problem...");
@@ -217,7 +265,7 @@ public class api_methods {
                                 Log.d(TAG + classname, "Handline autherror failure");
                                 refresh_token(sharedPreferences, TAG);
                                 userprofile(requestType, TAG, url);
-                            }else{
+                            } else {
                                 Log.e(TAG + classname, "some network error occured.");
                                 Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
                             }
@@ -282,7 +330,7 @@ public class api_methods {
                                 Log.d(TAG + classname, "Handline autherror failure");
                                 refresh_token(sharedPreferences, TAG);
                                 userprofile(requestType, TAG, url);
-                            }else{
+                            } else {
                                 mResultCallback.notifyError(requestType, error);
                             }
                         } catch (Exception e) {
@@ -293,17 +341,17 @@ public class api_methods {
                     }
                 }) {
 
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Bearer " + _access_token);
-                        return params;
-                    }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + _access_token);
+                return params;
+            }
 
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
 
             @Override
             public byte[] getBody() throws AuthFailureError {
@@ -324,7 +372,82 @@ public class api_methods {
         queue.add(postRequest);
     }
 
-// final String _title, final String _price, final String _type, final String _description, final String _phone
+    public void flagsaman(final String requestType, final String TAG, final String url, final String reason){
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
+        final String _access_token = sharedPreferences.getString("access_token", null);
+        String _refresh_token = sharedPreferences.getString("refresh_token", null);
+
+        final RequestQueue queue = Volley.newRequestQueue(context);  // passing context is neccessary.
+
+        if (requestType.contains("flagcall")) {
+            try {
+                if (_access_token.length() >= 10) {
+                    final StringRequest getRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    // response
+                                    Log.d(TAG + classname, "respose -> is recieved for all the posts");
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.trim());
+                                        mResultCallback.notifySuccess(requestType, jsonObject);
+                                        Log.d(TAG + classname, "result decoded sucessfully.");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e(TAG + classname, "Error.Response -> " + error);
+                                    try {
+                                        if (error.networkResponse.statusCode == 401) {
+                                            Log.d(TAG + classname, "Handling autherror failure");
+                                            refresh_token(sharedPreferences, TAG);
+                                            list_user_saman(requestType, TAG, url);
+                                        } else if (error.networkResponse.statusCode == 404){
+                                            Log.e(TAG + classname, "saman post not found");
+                                            mResultCallback.ErrorString(requestType, "saman post not found");
+                                        } else {
+                                            Log.e(TAG + classname, "some network error occured.");
+                                            Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(TAG + classname, "Maybe problem in internet connection.");
+                                    }
+
+                                    mResultCallback.notifyError(requestType, error);
+                                }
+                            }
+                    ) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", "Bearer " + _access_token);
+
+                            return params;
+                        }
+
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("reason", reason);
+
+                            return params;
+                        }
+                    };
+                    queue.add(getRequest);
+                } else{
+                    mResultCallback.ErrorString(requestType, "wrong token");
+                }
+            } catch (Exception e) {
+                mResultCallback.ErrorString(requestType, "token absent");
+            }
+        }
+    }
+
+    // final String _title, final String _price, final String _type, final String _description, final String _phone
     public void singlesamaninfo(final String requestType, final String TAG, final String url, final String _title, final String _price, final String _type, final String _description, final String _phone) {
         final SharedPreferences sharedPreferences = context.getSharedPreferences(sharedpreferencename, MODE_PRIVATE);
         final String _access_token = sharedPreferences.getString("access_token", null);
@@ -332,54 +455,101 @@ public class api_methods {
 
         RequestQueue queue = Volley.newRequestQueue(context);  // passing context is neccessary.
 
-        if(requestType.contains("GETCALL")){
-            if (_access_token.length() >= 10){
-                StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // response
-                                Log.d(TAG + classname, "respose -> is recieved for particular saman post");
-                                try {
-                                    JSONObject jsonObject = new JSONObject(response.trim());
-                                    mResultCallback.notifySuccess(requestType, jsonObject);
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    mResultCallback.ErrorString(requestType, e.toString());
+        if (requestType.contains("GETCALL")) {
+            // if user is logged out then it will give error here acess tocken not exist so we will use then api request without header in catch block:-
+            try {
+                if (_access_token.length() >= 10) {
+                    Log.d(TAG, "called single saman endpoint with header!");
+                    StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    // response
+                                    Log.d(TAG + classname, "respose -> is recieved for particular saman post");
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response.trim());
+                                        String _phone = jsonObject.getString("phone");
+                                        if(_phone.contains("xxxx")){
+                                            Log.e(TAG + classname, "phone number is xxxx hence trying to refresh the token");
+                                            refresh_token(sharedPreferences, TAG);
+                                            singlesamaninfo(requestType, TAG, url, null, null, null, null, null);
+                                        } else {
+                                            Log.d(TAG + classname, "token is valid and resut is obtained successfully");
+                                            mResultCallback.notifySuccess(requestType, jsonObject);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        mResultCallback.ErrorString(requestType, e.toString());
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e(TAG + classname, "Error.Response -> " + error);
+                                    try {
+                                        if (error.networkResponse.statusCode == 401) {
+                                            Log.d(TAG + classname, "Handling autherror failure");
+                                            refresh_token(sharedPreferences, TAG);
+                                            singlesamaninfo(requestType, TAG, url, null, null, null, null, null);
+                                        } else {
+                                            Log.e(TAG + classname, "some network error occured.");
+                                            Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(TAG + classname, "Maybe problem in internet connection.");
+                                    }
+                                    mResultCallback.notifyError(requestType, error);
                                 }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.e(TAG + classname, "Error.Response -> " + error);
-                                try{
-                                    if (error.networkResponse.statusCode == 401) {
-                                        Log.d(TAG + classname, "Handling autherror failure");
-                                        refresh_token(sharedPreferences, TAG);
-                                        singlesamaninfo(requestType, TAG, url, null, null, null,null,null);
-                                    } else{
+                    ) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", "Bearer " + _access_token);
+
+                            return params;
+                        }
+                    };
+                    queue.add(getRequest);
+                } else {
+                    Log.e(TAG, "called single saman endpoint with header!");
+                    StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    // response
+                                    Log.d(TAG + classname, "respose -> is recieved for particular saman post");
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        mResultCallback.notifySuccess(requestType, jsonObject);
+                                        Log.d(TAG + classname, "result decoded sucessfully.");
+                                        Log.d(TAG + classname, "Desired result is ====>>" + jsonObject.toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        mResultCallback.ErrorString(requestType, e.toString());
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.e(TAG + classname, "Error.Response -> " + error);
+                                    try {
                                         Log.e(TAG + classname, "some network error occured.");
                                         Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
+                                    } catch (Exception e) {
+                                        Log.e(TAG + classname, "Maybe problem in internet connection.");
                                     }
-                                } catch(Exception e) {
-                                    Log.e(TAG + classname, "Maybe problem in internet connection.");
+                                    mResultCallback.notifyError(requestType, error);
                                 }
-                                mResultCallback.notifyError(requestType, error);
                             }
-                        }
-                ) {
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Bearer " + _access_token);
-
-                        return params;
-                    }
-                };
-                queue.add(getRequest);
-            } else {
+                    );
+                    queue.add(getRequest);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "The call with header request is not successfull henche calling without header.");
+                // now running the api request without access token header:-
                 StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
@@ -401,10 +571,10 @@ public class api_methods {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 Log.e(TAG + classname, "Error.Response -> " + error);
-                                try{
+                                try {
                                     Log.e(TAG + classname, "some network error occured.");
                                     Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
-                                } catch(Exception e) {
+                                } catch (Exception e) {
                                     Log.e(TAG + classname, "Maybe problem in internet connection.");
                                 }
                                 mResultCallback.notifyError(requestType, error);
@@ -413,7 +583,7 @@ public class api_methods {
                 );
                 queue.add(getRequest);
             }
-        } else if(requestType.contains("POSTCALL")){
+        } else if (requestType.contains("POSTCALL")) {
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -512,16 +682,16 @@ public class api_methods {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.e(TAG + classname, "Error.Response -> " + error);
-                        try{
+                        try {
                             if (error.networkResponse.statusCode == 401) {
                                 Log.d(TAG + classname, "Handling autherror failure");
                                 refresh_token(sharedPreferences, TAG);
                                 list_user_saman(requestType, TAG, url);
-                            } else{
+                            } else {
                                 Log.e(TAG + classname, "some network error occured.");
                                 Log.e(TAG + classname, "error code is -> " + error.networkResponse.statusCode);
                             }
-                        } catch(Exception e) {
+                        } catch (Exception e) {
                             Log.e(TAG + classname, "Maybe problem in internet connection.");
                         }
 
@@ -660,17 +830,17 @@ public class api_methods {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        Log.d(TAG, "response recieved successfully..!!");
+                        Log.d(TAG + classname, "response recieved successfully..!!");
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String acess_key = jsonObject.getString("access_token");
-                            Log.d(TAG, "refreshed token");
+                            Log.d(TAG + classname, "refreshed token");
                             SharedPreferences.Editor editor = SHAREDPREF.edit();
                             editor.putString("access_token", acess_key);
                             editor.commit();
-                            Log.d(TAG, "Access key Refreshed Sucessfully..!!");
+                            Log.d(TAG + classname, "Access key Refreshed Sucessfully..!!");
                         } catch (JSONException e) {
-                            Log.e(TAG, e.toString());
+                            Log.e(TAG + classname, e.toString());
                             e.printStackTrace();
                         }
                     }
@@ -679,8 +849,8 @@ public class api_methods {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
-                        Log.e(TAG, "Some error occured while refreshing the acess key.");
-                        Log.e(TAG, "error => " + error.toString());
+                        Log.e(TAG + classname, "Some error occured while refreshing the acess key.");
+                        Log.e(TAG + classname, "error => " + error.toString());
                     }
                 }
         ) {

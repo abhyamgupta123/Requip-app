@@ -158,6 +158,8 @@ public class Registration extends AppCompatActivity {
                     } else if(message.contains("is created")){
                         dialog.hide();
                         Toast.makeText(Registration.this, "User Registered Successfully, Now check yyour mail and verify yourself.", 4).show();
+                        startActivity(new Intent(Registration.this, MainActivity.class));
+                        finishAffinity();
 
 //                        dialog = ProgressDialog.show(Registration.this, "Logging In",
 //                                "Your patience is appriciated!.", true);
