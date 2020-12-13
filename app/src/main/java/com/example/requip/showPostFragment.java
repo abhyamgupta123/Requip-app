@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -60,6 +62,10 @@ public class showPostFragment extends Fragment {
 
     private String phone_number;
     private String username;
+    private String samanId;
+
+    // flag to check if instance is created for 1st time or resumed;-
+    private boolean onresume = false;
 
     List<saman> sugesstionsamanlist = new ArrayList<saman>();
     RecyclerView rv_suggestedsamanpost;
@@ -178,7 +184,47 @@ public class showPostFragment extends Fragment {
             }
         });
 
+        rv_suggestedsamanpost.addOnItemTouchListener(new mypostFragment.RecyclerTouchListener(thiscontext, rv_suggestedsamanpost, new mypostFragment.ClickListener(){
+            @Override
+            public void onClick(View view, final int position) {
+                // adding values to pass to ther activity:-
+                Bundle args = new Bundle();
+                args.putString("samanid", sugesstionsamanlist.get(position).getId());
+                args.putString("sugesstion_type", sugesstionsamanlist.get(position).getType());
+
+                Fragment showpostfragment = new showPostFragment();
+                showpostfragment.setArguments(args);
+
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.add(R.id.fraagment_view, showpostfragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+//                Toast.makeText(thiscontext, "Long press on position :"+ position, Toast.LENGTH_LONG).show();
+//                Toast.makeText(thiscontext, "the price is " + samanList.get(position).getId(), Toast.LENGTH_SHORT).show();
+            }
+        }));
+
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onresume = true;
+    }
+
+
+    @Override
+    public void onResume() {
+        if(dialog.isShowing() && onresume){
+            dialog.dismiss();
+            Log.e(TAG, "Dialog dissmissed is called");
+        }
+        super.onResume();
     }
 
     private void filterate_rvsuggestion(){
@@ -214,6 +260,9 @@ public class showPostFragment extends Fragment {
                         String _tags = response.getString("tags");
                         String _image = response.getString("images");
 
+                        // for getting the saman id to avoid that same item to come in suggestion list.
+                        samanId = response.getString("_id");
+
                         JSONArray jsonArray_tags = response.getJSONArray("tags");
                         String sugesstion_words = "";
                         for (int i = 0; i < jsonArray_tags.length(); i++){
@@ -223,7 +272,6 @@ public class showPostFragment extends Fragment {
                         sugesstion_url = sugesstion_url + sugesstion_words + "&limit=4";
                         // calling for sugesstion list:-
                         Log.d(TAG, "calling suggestion post lists");
-                        Log.e(TAG, "sugesstion url is =====>>>>>>>>>>>" + sugesstion_url);
                         method.list_saman("SUGESTIONGETCALL", TAG, sugesstion_url);
 
                         // setting the data values to objects:-
@@ -287,18 +335,21 @@ public class showPostFragment extends Fragment {
                 } catch (Exception e) {
                     Log.e(TAG, "Dialog object is not referenced to show before.");
                 }
+                // this is for getting list of suggested items:-
                 if (requestType.contains("SUGESTIONGETCALL")){
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject jsonobject = null;
                         try {
                             jsonobject = response.getJSONObject(i);
                             String _id = jsonobject.getString("_id");
-                            String _title = jsonobject.getString("title");
-                            String _price = jsonobject.getString("price");
-                            String _type = jsonobject.getString("type");
-                            String _images = jsonobject.getString("images");
+                            if (!(_id.equals(samanId))){
+                                String _title = jsonobject.getString("title");
+                                String _price = jsonobject.getString("price");
+                                String _type = jsonobject.getString("type");
+                                String _images = jsonobject.getString("images");
 
-                            sugesstionsamanlist.add(new saman(_id, _title, _price, _type, _images));
+                                sugesstionsamanlist.add(new saman(_id, _title, _price, _type, _images));
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -390,4 +441,58 @@ public class showPostFragment extends Fragment {
                 break;
         }
     }
+
+    // this part of code is to set onsingle click or or longclick listener on items of recycleview:-
+    public static interface ClickListener {
+        public void onClick(View view, int position);
+
+        public void onLongClick(View view, int position);
+    }
+
+
+    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private mypostFragment.ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final mypostFragment.ClickListener clicklistener) {
+
+            this.clicklistener = clicklistener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recycleView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.onLongClick(child, recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.onClick(child, rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
 }

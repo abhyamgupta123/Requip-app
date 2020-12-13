@@ -37,6 +37,8 @@ public class postEditFragment extends Fragment {
     private TextInputLayout phone;
     private SwitchMaterial switchbox;
 
+    // flag to check if instance is created for 1st time or resumed;-
+    private boolean onresume = false;
 
     private Context thiscontext;
     private IResult mResultCallback = null;
@@ -146,6 +148,30 @@ public class postEditFragment extends Fragment {
         makeInvisible();
         return view;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onresume = true;
+    }
+
+    @Override
+    public void onResume() {
+        if(dialog.isShowing() && onresume) {
+            dialog.dismiss();
+            Log.e(TAG, "Dialog dissmissed is called");
+        }
+        super.onResume();
+    }
+
+
+//    @Override
+//    public void onResume() {
+//        if(dialog.isShowing()){
+//            dialog.dismiss();
+//        }
+//        super.onResume();
+//    }
 
     void initVolleyCallback() {
         mResultCallback = new IResult() {

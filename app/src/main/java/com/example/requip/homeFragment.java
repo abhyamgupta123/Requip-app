@@ -36,6 +36,9 @@ public class homeFragment extends Fragment {
     private Context thiscontext;
     private SwipeRefreshLayout swipeContainer;
 
+    // flag to check if instance is created for 1st time or resumed;-
+    private boolean onresume = false;
+
     IResult mResultCallback = null;
     api_methods method;
 
@@ -160,6 +163,29 @@ public class homeFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onresume = true;
+    }
+
+    @Override
+    public void onResume() {
+        if(dialog.isShowing() && onresume) {
+            dialog.dismiss();
+            Log.e(TAG, "Dialog dissmissed is called");
+        }
+        super.onResume();
+    }
+
+//    @Override
+//    public void onResume() {
+//        if(dialog.isShowing()){
+//            dialog.dismiss();
+//        }
+//        super.onResume();
+//    }
 
     private void refresh(){
         Log.d( TAG, "refreshing the post lists..." );

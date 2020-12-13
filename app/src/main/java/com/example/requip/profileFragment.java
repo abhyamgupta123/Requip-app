@@ -67,6 +67,9 @@ public class profileFragment extends Fragment {
     private SwitchMaterial switchbox;
     private Button update;
 
+    // flag to check if instance is created for 1st time or resumed;-
+    private boolean onresume = false;
+
     TextInputEditText p_name;
     TextInputEditText p_username;
     TextInputEditText p_email;
@@ -176,6 +179,22 @@ public class profileFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        onresume = true;
+    }
+
+    @Override
+    public void onResume() {
+        if(dialog.isShowing() && onresume) {
+            dialog.dismiss();
+            Log.e(TAG, "Dialog dissmissed is called");
+        }
+        super.onResume();
+    }
+
 
     void initVolleyCallback() {
         mResultCallback = new IResult() {

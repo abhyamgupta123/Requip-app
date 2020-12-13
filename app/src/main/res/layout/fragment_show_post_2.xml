@@ -196,13 +196,21 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Related Posts"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            style="@style/TextAppearance.MaterialComponents.Headline6"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_suggestedsaman"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2dp"
             android:orientation="horizontal"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

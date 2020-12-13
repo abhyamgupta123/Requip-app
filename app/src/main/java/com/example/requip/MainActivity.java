@@ -9,6 +9,7 @@ import androidx.core.app.ShareCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -282,6 +283,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 searchmenu.setVisible(true);
                 selectedfragment = new homeFragment();
                 fab.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_logout:
                 try {
@@ -304,6 +307,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(this, "Try again....", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.toString());
                 }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_editprofile:
                 searchmenu.setVisible(false);
@@ -311,6 +317,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle("My Profile");
                 selectedfragment = new profileFragment();
                 fab.setVisibility(View.INVISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_myposts:
                 searchmenu.setVisible(false);
@@ -318,29 +326,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle("My Posts");
                 selectedfragment = new mypostFragment();
                 fab.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_chat:
                 selectedfragment = new chatmain();
                 fab.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_share:
-                ShareCompat.IntentBuilder.from(this)
-                        .setType("text/plain")
-                        .setText("something")
-                        .startChooser();
+//                ShareCompat.IntentBuilder.from(this)
+//                        .setType("text/plain")
+//                        .setText("something")
+//                        .startChooser();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://github.com/abhyamgupta123/Requip-app");
+//                sendIntent.getSelector();
+                sendIntent.setType("text/*");
+//                startActivity(Intent.createChooser(sendIntent, null));
+                startActivity(sendIntent);
+
                 break;
             case R.id.nav_conctribute:
                 selectedfragment = new chatmain();
                 fab.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
             case R.id.nav_dev:
                 selectedfragment = new chatmain();
                 fab.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
                 break;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fraagment_view, selectedfragment).commit();
+
         drawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
+    }
+
+    public Fragment getVisibleFragment(){
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments != null){
+            for(Fragment fragment : fragments){
+                if(fragment != null && fragment.isVisible())
+                    return fragment;
+            }
+        }
+        return null;
     }
 
     public void gotologinactivity(View view) {
